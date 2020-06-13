@@ -19,3 +19,7 @@ This project uses a `.env` file for all environment variable configurations incl
 To get the database up and running, simply create an empty database and run the already created migrations to create the database tables. You can do this by running `php leaf db:migrate`.
 
 After this, you just need to add your database information in the `.env` file, and voila!
+
+### About Leaf API
+
+Leaf API is an MVC wrapper built around the [Leaf PHP Framework](https://leafphp.netlify.app) but geared towards effortless development of APIs. It comes with really handy tools like the leaf cmd tool, env setup, powerful database tools and helpers.
