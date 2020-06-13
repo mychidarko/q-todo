@@ -1,12 +1,23 @@
 <?php
 namespace App\Controllers;
 
-class TodosController extends Controller {    
+use App\Models\Todo;
+
+class TodosController extends Controller {
     /**
      * Display a listing of the resource.
      */
     public function index() {
-        //
+        // check and validate bearer token (proof of authentication)
+        $payload = $this->auth->validateToken();
+        // throw an error if there's a problem with token
+        if (!$payload) $this->throwErr($this->auth->errors());
+
+        // get user id from token
+        $user_id = $payload->user_id;
+
+        // retrieve user's todos
+        $this->respondWithCode(Todo::where("user_id", $user_id));
     }
 
     /**
