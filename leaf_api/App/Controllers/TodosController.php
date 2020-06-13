@@ -24,6 +24,13 @@ class TodosController extends Controller {
      * Show the form for creating a new resource.
      */
     public function create() {
+        // 
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store() {
         // token validation
         $payload = $this->auth->validateToken();
         if (!$payload) $this->throwErr($this->auth->errors());
@@ -40,13 +47,6 @@ class TodosController extends Controller {
         $todo->save();
 
         $this->respondWithCode($todo);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store() {
-        //
     }
 
     /**
