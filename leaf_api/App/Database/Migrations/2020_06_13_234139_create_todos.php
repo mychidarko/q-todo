@@ -3,7 +3,7 @@
     
     use Leaf\Database;
     
-    class CreateUsers extends Database {
+    class CreateTodos extends Database {
         public function __construct() {
             parent::__construct();
         }
@@ -14,12 +14,11 @@
          * @return void
          */
         public function up()  {
-            if(!$this->capsule::schema()->hasTable("users")):
-                $this->capsule::schema()->create("users", function ($table) {
+            if(!$this->capsule::schema()->hasTable("todos")):
+                $this->capsule::schema()->create("todos", function ($table) {
                     $table->increments('id');
-                    $table->string('username')->unique();
-                    $table->string('email')->unique();
-                    $table->string('password');
+                    $table->string('user_id');
+                    $table->string('todo');
                     $table->timestamps();
                 });
             endif;
@@ -31,6 +30,6 @@
          * @return void
          */
         public function down() {
-            $this->capsule::schema()->dropIfExists("users");
+            $this->capsule::schema()->dropIfExists("todos");
         }
     }
