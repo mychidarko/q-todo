@@ -1,24 +1,15 @@
-# structure
+# Qodehub Internship Project - TODO App - Vue JS version
 
-## Project setup
-```
-yarn install
-```
+This is my Qodehub summer internship project, a todo app built with [Vue JS](https://vuejs.org).
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
+## Set up
 
-### Compiles and minifies for production
-```
-yarn build
-```
+To get this project running:
 
-### Lints and fixes files
-```
-yarn lint
-```
+* Clone this project to your local device.
+* Install all required packages with `npm install`.
+* Run `npm run serve` to view the project in your browser.
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Configuration
+
+This project uses `src/config/index.js` file for all environment variable configurations including the API URL.
