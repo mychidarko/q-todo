@@ -29,4 +29,11 @@ $app->get("/", function() use($app) {
 	$app->response->respondWithCode("Congrats!! You're on Leaf API", 200);
 });
 
+// create a route group
+$app->mount("/auth", function() use($app) {
+	// post routes for login & signup
+	$app->post("/login", "UsersController@login");
+	$app->post("/register", "UsersController@register");
+});
+
 $app->resource("/todos", "TodosController");
