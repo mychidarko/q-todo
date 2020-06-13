@@ -91,6 +91,15 @@ class TodosController extends Controller {
      * Remove the specified resource from storage.
      */
     public function destroy($id) {
-        //
+        // make sure user is logged in
+        $payload = $this->auth->validateToken();
+        if (!$payload) $this->throwErr($this->auth->errors());
+
+        $user_id = $payload->user_id;
+
+        // delete todo
+        Todo::find($id)->delete();
+
+        $this->respondWithCode(Todo::where("user_id", $user_id)->get());
     }
 }
