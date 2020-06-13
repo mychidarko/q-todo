@@ -24,7 +24,22 @@ class TodosController extends Controller {
      * Show the form for creating a new resource.
      */
     public function create() {
-        //
+        // token validation
+        $payload = $this->auth->validateToken();
+        if (!$payload) $this->throwErr($this->auth->errors());
+
+        $user_id = $payload->user_id;
+
+        // get values passed into request, values are checked by default for scripts
+        $task = $this->request->get("todo");
+
+        // add a new todo
+        $todo = new Todo;
+        $todo->user_id = $user_id;
+        $todo->todo = $task;
+        $todo->save();
+
+        $this->respondWithCode($todo);
     }
 
     /**
