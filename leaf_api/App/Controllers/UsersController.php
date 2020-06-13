@@ -68,13 +68,70 @@ class AuthController extends Controller {
         // throw an auth error if there's an issue
         if (!$user) $this->throwErr($this->auth->errors());
 
-        $this->respondWithCode($user, 200);
+        $this->respondWithCode($user);
     }
 
     // refresh the user if the token is expired (must be called on the frontend)
     // usually, not taking a password would lead to others using this endpoint to get other users' info
     public function refreshToken($id)
     {
-        $this->respondWithCode($this->auth->login("users", ["id" => $id]), 200);
+        $this->respondWithCode($this->auth->login("users", ["id" => $id]));
+    }
+
+    // get a user's info
+    public function user()
+    {
+        // make sure user is logged in
+        $payload = $this->auth->validateToken();
+        if (!$payload) $this->throwErr($this->auth->errors());
+
+        $user_id = $payload->user_id;
+
+        $this->respondWithCode(User::find($user_id));
+    }
+
+    public function update()
+    {
+        // make sure user is logged in
+        $payload = $this->auth->validateToken();
+        if (!$payload) $this->throwErr($this->auth->errors());
+
+        $user_id = $payload->user_id;
+
+        $username = $this->request->get("username");
+        $email = $this->request->get("email");
+
+        $validation = $this->form->validate([
+            "username" => "validUsername",
+            "email" => "email"
+        ]);
+
+        if (!$validation) $this->throwErr($this->form->errors());
+
+        // make sure that the new username isn't in use
+        $users = $this->auth->choose("users", "*", ["username" => $new_username])->fetchAll();
+        $users = array_filter($users, function ($user) use ($user_id) {
+            return $user["id"] != $user_id;
+        });
+
+        // throw error if new username is in use
+        if (count($users) > 0) $this->throwErr(['username' => 'Username already exists']);
+
+        // make sure that the new email isn't in use
+        $users = $this->auth->choose("users", "*", ["email" => $email])->fetchAll();
+        $users = array_filter($users, function ($user) use ($user_id) {
+            return $user["id"] != $user_id;
+        });
+
+        // throw error if new email is in use
+        if (count($users) > 0) $this->throwErr(['email' => 'Email already exists']);
+
+        // edit user if no errors are found
+        $user = User::find($user_id);
+        $user->username = $username;
+        $user->email = $email;
+        $user->save();
+
+        $this->respondWithCode($this->auth->login("users", ["id" => $user_id]));
     }
 }
