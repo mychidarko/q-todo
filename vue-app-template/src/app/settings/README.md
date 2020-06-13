@@ -8,7 +8,7 @@ Every directory has it's `components`, `routes`, `store` to manage how that part
 
 ---
 
-`Login.vue` is the Vue component itself and `index.js` is kind of acting as a bootstrap for the component.
+`Home.vue` is the Vue component itself and `index.js` is kind of acting as a bootstrap for the component.
 
 ### Inside `routes` Folder
 
@@ -19,5 +19,7 @@ Every directory has it's `components`, `routes`, `store` to manage how that part
 ### Inside `store` Folder
 
 ---
+
+This folder contains the store activities such as `actions`, `getters`, `mutations`, and `states`.
 
 `index.js` is the central point for those store activities.
