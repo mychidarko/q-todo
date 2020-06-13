@@ -53,7 +53,12 @@ class TodosController extends Controller {
      * Display the specified resource.
      */
     public function show($id) {
-        //
+        // make sure user is logged in
+        $payload = $this->auth->validateToken();
+        if (!$payload) $this->throwErr($this->auth->errors());
+
+        // retrieve user's todos
+        $this->respondWithCode(Todo::where("id", $id));
     }
 
     /**
