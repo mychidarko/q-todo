@@ -35,7 +35,12 @@ $app->mount("/auth", function() use($app) {
 	$app->post("/login", "UsersController@login");
 	$app->post("/register", "UsersController@register");
 	// (\d+) limits the route to only accept integers, anything else would result in a 404 error
-	$app->get("/refresh/(\d+)", "UsersController@register");
+	$app->get("/refresh/(\d+)", "UsersController@refreshToken");
+});
+
+$user->mount("/user", function() use($app) {
+	$app->get("/", "UsersController@user");
+	$app->post("/update", "UsersController@update");
 });
 
 $app->resource("/todos", "TodosController");
