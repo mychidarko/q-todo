@@ -17,7 +17,7 @@ class TodosController extends Controller {
         $user_id = $payload->user_id;
 
         // retrieve user's todos
-        $this->respondWithCode(Todo::where("user_id", $user_id));
+        $this->respondWithCode(Todo::where("user_id", $user_id)->get());
     }
 
     /**
@@ -58,7 +58,7 @@ class TodosController extends Controller {
         if (!$payload) $this->throwErr($this->auth->errors());
 
         // retrieve user's todos
-        $this->respondWithCode(Todo::where("id", $id));
+        $this->respondWithCode(Todo::find($id));
     }
 
     /**
@@ -72,7 +72,19 @@ class TodosController extends Controller {
      * Update the specified resource in storage.
      */
     public function update($id) {
-        //
+        // make sure user is logged in
+        $payload = $this->auth->validateToken();
+        if (!$payload) $this->throwErr($this->auth->errors());
+
+        // get values passed into request, values are checked by default for scripts
+        $task = $this->request->get("todo");
+
+        // add a new todo
+        $todo = Todo::find($id);
+        $todo->todo = $task;
+        $todo->save();
+
+        $this->respondWithCode($todo);
     }
 
     /**
