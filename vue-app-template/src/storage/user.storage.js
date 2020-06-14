@@ -18,11 +18,13 @@ export function refreshToken($function = null) {
 	return axios
 		.get(`${API_URL}/auth/refresh/${get("id")}`)
 		.then((res) => {
-			let user = get();
-			user.token = res.data.token;
-			save(user);
+			if (res.data.data) {
+				let user = get();
+				user.token = res.data.data.token;
+				save(user);
 
-			if ($function !== null) return $function();
+				if ($function !== null) return $function();
+			}
 		});
 }
 

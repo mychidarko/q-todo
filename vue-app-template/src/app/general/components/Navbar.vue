@@ -18,7 +18,7 @@
 				<b-nav-item-dropdown right>
 					<!-- Using 'button-content' slot -->
 					<template v-slot:button-content>
-						<em>User</em>
+						<em>{{ user.username }}</em>
 					</template>
 					<b-dropdown-item to="/user">Profile</b-dropdown-item>
 					<b-dropdown-item @click="logout">Sign Out</b-dropdown-item>

@@ -111,11 +111,20 @@ export default {
       axios({ url: `${API_URL}/auth/register`, method: "post", data })
           .then((res) => {
               console.log("res", res.data);
-              if (res.data.error) {
-                this[`${res.data.error}Error`] = res.data.error;
+              if (res.data.error && res.data.error.username) {
+                this.usernameError = res.data.error.username;
                 this.logginIn = false;
-              } else {
-                User.save(res.data);
+              }
+              if (res.data.error && res.data.error.email) {
+                this.emailError = res.data.error.email;
+                this.logginIn = false;
+              }
+              if (res.data.error && res.data.error.password) {
+                this.passwordError = res.data.error.password;
+                this.logginIn = false;
+              }
+              if (res.data.data) {
+                User.save(res.data.data);
                 this.logginIn = false;
                 this.$router.push("/home");
               }
