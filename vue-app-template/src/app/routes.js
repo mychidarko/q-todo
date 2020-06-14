@@ -6,10 +6,16 @@ import settings from "./settings/routes";
 export default [
 	{
 		path: "/",
-		redirect: "/home"
+		component: () => import("./layout/Main.vue"),
+		children: [
+			{
+				path: "/",
+				redirect: "/home"
+			},
+			...home,
+			...auth,
+			...settings
+		]
 	},
-	...home,
-	...auth,
 	...errors,
-	...settings
 ];
