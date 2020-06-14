@@ -1,17 +1,19 @@
 <template>
-	<form @submit.prevent="addNewTodo">
+	<div>
 		<b-alert  :show="taskError.length > 0" variant="danger" dismissible>{{ taskError }}</b-alert>
-		<b-alert  v-model="success" variant="success" dismissible>{{ task }} has been added!</b-alert>
-		<h4>Add New Task</h4>
-		<b-card>
-			<div class="center d-flex justify-content-center align-items-center py-0">
-				<b-form-input size="md" class="mr-3 ml-1 col-lg-10 col-md-9 col-8" placeholder="New Todo" v-model="task" @keydown="success = false"></b-form-input>
-				<b-button size="md" class="my-2 my-sm-0 col-lg-2 col-md-3 col-4" type="submit" :disabled="addingTask">
+		<b-alert  v-model="success" variant="success" dismissible>Task has been saved!</b-alert>
+		<p class="mt-5" v-b-modal="'add-task-modal'">+ Add A Task</p>
+		<b-modal id="add-task-modal" title="Add New Task">
+			<form @submit.prevent="addNewTodo">
+				<b-form-input size="md" placeholder="New Todo" v-model="task" @keydown="success = false" />
+			</form>
+			<div slot="modal-footer">
+				<b-button size="md" type="submit" @click="addNewTodo" :disabled="addingTask">
 					{{ addingTask ? "Saving Task..." : "Add Task" }}
 				</b-button>
 			</div>
-		</b-card>
-	</form>
+		</b-modal>
+	</div>
 </template>
 
 <script>
@@ -56,7 +58,9 @@ export default {
 					if (res.data.data) {
 						this.fetchTodos();
 						this.addingTask = false;
+						this.task = "";
 						this.success = true;
+						this.$bvModal.hide('add-task-modal');
 					}
 					if (res.data.error && res.data.error === "Expired token") {
 						User.refreshToken(this.addNewTodo);

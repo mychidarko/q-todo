@@ -14,7 +14,7 @@
           <h4 class="mb-0">Your Tasks</h4>
           <small>You can double click to edit</small>
           <div class="mt-3 todos">
-            <todo v-for="(todo, index) in tasks" :key="index" :task="todo" />
+            <todo v-for="(todo, index) in tasks" :key="index" :task="todo" :fetchTodos="fetchTodos" />
           </div>
         </div>
       </div>

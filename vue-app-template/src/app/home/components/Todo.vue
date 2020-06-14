@@ -1,14 +1,17 @@
 <template>
 	<div
-		class="todo d-flex"
+		class="todo"
 		@dblclick="inlineEdit = true"
 		@mouseleave="inlineEdit = false">
 		<div class="form-group form-check">
 			<input type="checkbox" class="form-check-input" v-model="isChecked" :id="`task-${task.id}`" @change="updateTask">
 			<label class="form-check-label" :for="`task-${task.id}`">
-				<div v-if="!inlineEdit">{{ task.name }}</div>
-				<input class="inline-edit-input" v-else type="text" v-model="task.name" @keydown.enter="updateTask">
+				<div v-if="!inlineEdit" :class="`todo-done-${isChecked}`">{{ task.name }}</div>
+				<input v-else type="text" v-model="task.name" @keydown.enter="updateTask" focus>
 			</label>
+			<button class="btn btn-danger float-right btn-sm" @click="deleteTask" :disabled="deletingTask">
+				{{ deletingTask ? "Deleting Task..." : "Delete Task" }}
+			</button>
 		</div>
 	</div>
 </template>
@@ -24,10 +27,40 @@ export default {
 		return {
 			isChecked: this.task.status === 'done' ? true : false,
 			label: this.task.name,
-			inlineEdit: false
+			inlineEdit: false,
+			deletingTask: false
 		}
 	},
 	methods: {
+		deleteTask: function() {
+			this.deletingTask = true;
+
+			let headers = { authorization: `Bearer ${User.get(TOKEN_STORAGE_KEY)}` };
+			
+			axios({ url: `${API_URL}/todos/${this.task.id}/delete`, method: "post", headers })
+				.then((res) => {
+					if (res.data.data) {
+						this.fetchTodos();
+						this.deletingTask = false;
+					}
+					if (res.data.error && res.data.error === "Expired token") {
+						User.refreshToken(this.updateTask);
+					}
+				})
+				.catch((err) => {
+					let errors = String(err).split(" ");
+					let errs = "";
+			
+					for (let index = 0; index < errors.length; index++) {
+						const error = errors[index];
+						if (index > 0) {
+							errs = `${errs} ${error} `;
+						}
+					}
+			
+					console.log(errs);
+				});
+		},
 		updateTask: function() {
 			if (this.task.name.length === 0) {
 				this.task.name = this.label;
@@ -64,7 +97,8 @@ export default {
 		}
 	},
 	props: {
-		task: Object
+		task: Object,
+		fetchTodos: Function
 	}
 }
 </script>
@@ -74,7 +108,9 @@ export default {
 	border-bottom: 1px solid #cecece !important;
 	padding-top: 15px !important;
 }
-.inline-edit-input {
-	z-index: 1000 !important;
+
+.todo-done-true {
+	text-decoration: line-through !important;
+	color: rgb(110, 110, 110);
 }
 </style>
