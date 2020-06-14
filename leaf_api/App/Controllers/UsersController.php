@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use App\Models\User;
 
-class AuthController extends Controller {
+class UsersController extends Controller {
     public function login()
     {
         // in this case, $username can contain either a username or email
@@ -22,7 +22,7 @@ class AuthController extends Controller {
 
         if ($this->form->isEmail($username)) {
             // check for email, throwErr if not found
-            if (count(User::where("email", $username)->get()) == 0) $this->throwErr("Email doesn't exist");
+            if (count(User::where("email", $username)->get()) == 0) $this->throwErr(["username" => "Email doesn't exist"]);
             // login directly with Leaf Auth. This will return the user without the password + a generated JWT
             $user = $this->auth->login("users", [
                 "email" => $username,
@@ -30,7 +30,7 @@ class AuthController extends Controller {
             ], "md5");
         } else {
             // check for username, throwErr if not found
-            if (count(User::where("username", $username)->get()) == 0) $this->throwErr("Username doesn't exist");
+            if (count(User::where("username", $username)->get()) == 0) $this->throwErr(["username" => "Username doesn't exist"]);
             // login directly with Leaf Auth. This will return the user without the password + a generated JWT
             $user = $this->auth->login("users", [
                 "username" => $username,
@@ -38,7 +38,7 @@ class AuthController extends Controller {
             ], "md5");
         }
         // at this point, if the user is not found, it can only mean that the password is wrong
-        if (!$user) $this->throwErr("Password is incorrect.");
+        if (!$user) $this->throwErr(["password" => "Password is incorrect."]);
 
         $this->respondWithCode($user, 200);
     }
