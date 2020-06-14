@@ -1,8 +1,10 @@
 <template>
   <div>
     <Navbar />
-    <new-todo />
-    <div class="login">Home</div>
+    <div class="container mt-4">
+      <new-todo />
+      <div class="login">Home</div>
+    </div>
   </div>
 </template>
 

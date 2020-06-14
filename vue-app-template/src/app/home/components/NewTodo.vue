@@ -1,8 +1,15 @@
 <template>
 	<form @submit.prevent="addNewTodo">
-		<div class="alert alert-danger">{{ taskError }}</div>
-		<input type="text" placeholder="New Todo" name="task" v-model="task">
-		<button type="submit" :disabled="addingTask">{{ addingTask ? "Saving New Todo..." : "Add Todo" }}</button>
+		<b-alert  :show="taskError.length > 0" variant="danger" dismissible>{{ taskError }}</b-alert>
+		<h3>Add New Task</h3>
+		<b-card>
+			<div class="center d-flex justify-content-center align-items-center">
+				<b-form-input size="md" class="mr-3 ml-1 col-md-9" placeholder="New Todo" v-model="task"></b-form-input>
+				<b-button size="md" class="my-2 my-sm-0 col-md-2" type="submit" :disabled="addingTask">
+					{{ addingTask ? "Saving New Todo..." : "Add Todo" }}
+				</b-button>
+			</div>
+		</b-card>
 	</form>
 </template>
 
@@ -37,3 +44,9 @@ export default {
 	}
 }
 </script>
+
+<style scoped>
+.form-row {
+	width: 100% !important;
+}
+</style>
