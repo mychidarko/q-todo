@@ -18,7 +18,8 @@
                 $this->capsule::schema()->create("todos", function ($table) {
                     $table->increments('id');
                     $table->string('user_id');
-                    $table->string('todo');
+                    $table->string('name');
+                    $table->string('status');
                     $table->timestamps();
                 });
             endif;

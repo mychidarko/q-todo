@@ -21,6 +21,24 @@ class TodosController extends Controller {
     }
 
     /**
+     * Display a listing of the resource.
+     */
+    public function find($search) {
+        // check and validate bearer token (proof of authentication)
+        $payload = $this->auth->validateToken();
+        // throw an error if there's a problem with token
+        if (!$payload) $this->throwErr($this->auth->errors());
+
+        // get user id from token
+        $user_id = $payload->user_id;
+
+        $search = Todo::where("user_id", $user_id)->where("name", "LIKE", "$search%")->get();
+
+        // retrieve user's todos
+        $this->respondWithCode($search);
+    }
+
+    /**
      * Show the form for creating a new resource.
      */
     public function create() {
@@ -43,7 +61,8 @@ class TodosController extends Controller {
         // add a new todo
         $todo = new Todo;
         $todo->user_id = $user_id;
-        $todo->todo = $task;
+        $todo->name = $task;
+        $todo->status = "in_progress";
         $todo->save();
 
         $this->respondWithCode($todo);
@@ -78,13 +97,15 @@ class TodosController extends Controller {
 
         // get values passed into request, values are checked by default for scripts
         $task = $this->request->get("todo");
+        $status = $this->request->get("status");
 
         // add a new todo
         $todo = Todo::find($id);
-        $todo->todo = $task;
+        $todo->name = $task;
+        $todo->status = $status;
         $todo->save();
 
-        $this->respondWithCode($todo);
+        $this->respondWithCode(Todo::find($id));
     }
 
     /**

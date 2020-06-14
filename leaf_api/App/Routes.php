@@ -41,4 +41,5 @@ $app->mount("/user", function() use($app) {
 	$app->post("/update", "UsersController@update");
 });
 
+$app->get("/todos/search/{keyword}", "TodosController@find");
 $app->resource("/todos", "TodosController");
