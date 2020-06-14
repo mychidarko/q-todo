@@ -13,9 +13,9 @@ export default [
 				redirect: "/home"
 			},
 			...home,
-			...auth,
 			...settings
 		]
 	},
+	...auth,
 	...errors,
 ];

@@ -35,12 +35,13 @@ export default {
 	name: "Navbar",
 	data: function() {
 		return {
-			search: ""
+			search: "",
+			user: User.get()
 		}
 	},
 	methods: {
 		handleSearch: function() {
-			this.$router.push(`/search/${this.seach}`);
+			this.$router.push(`/search/${this.search}`);
 		},
 		logout: function() {
 			User.remove();

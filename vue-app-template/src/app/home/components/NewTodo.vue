@@ -1,12 +1,12 @@
 <template>
 	<form @submit.prevent="addNewTodo">
 		<b-alert  :show="taskError.length > 0" variant="danger" dismissible>{{ taskError }}</b-alert>
-		<h3>Add New Task</h3>
+		<h4>Add New Task</h4>
 		<b-card>
-			<div class="center d-flex justify-content-center align-items-center">
-				<b-form-input size="md" class="mr-3 ml-1 col-md-9" placeholder="New Todo" v-model="task"></b-form-input>
-				<b-button size="md" class="my-2 my-sm-0 col-md-2" type="submit" :disabled="addingTask">
-					{{ addingTask ? "Saving New Todo..." : "Add Todo" }}
+			<div class="center d-flex justify-content-center align-items-center py-0">
+				<b-form-input size="md" class="mr-3 ml-1 col-lg-10 col-md-9 col-8" placeholder="New Todo" v-model="task"></b-form-input>
+				<b-button size="md" class="my-2 my-sm-0 col-lg-2 col-md-3 col-4" type="submit" :disabled="addingTask">
+					{{ addingTask ? "Saving Task..." : "Add Task" }}
 				</b-button>
 			</div>
 		</b-card>
@@ -34,8 +34,7 @@ export default {
 			}
 			return isValid;
 		},
-		addNewTodo: function(event) {
-			event.preventDefault();
+		addNewTodo: function() {
 			if (!this.validate()) return;
 
 			this.addingTask = true;
@@ -44,9 +43,3 @@ export default {
 	}
 }
 </script>
-
-<style scoped>
-.form-row {
-	width: 100% !important;
-}
-</style>

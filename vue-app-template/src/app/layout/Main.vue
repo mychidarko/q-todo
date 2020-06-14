@@ -1,7 +1,7 @@
 <template>
   <div>
     <Navbar />
-    <div class="container mt-5">
+    <div class="container mt-4">
       <router-view></router-view>
     </div>
   </div>
@@ -9,6 +9,7 @@
 
 <script>
 import Navbar from "@/app/general/components/Navbar.vue";
+
 export default {
   name: "Main",
   components: {
