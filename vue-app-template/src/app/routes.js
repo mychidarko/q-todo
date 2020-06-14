@@ -4,5 +4,12 @@ import errors from "./errors/routes";
 import settings from "./settings/routes";
 
 export default [
-	...home, ...auth, ...errors, ...settings
+	{
+		path: "/",
+		redirect: "/home"
+	},
+	...home,
+	...auth,
+	...errors,
+	...settings
 ];
