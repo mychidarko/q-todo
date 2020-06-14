@@ -2,14 +2,20 @@
   <div>
     <new-todo :fetchTodos="fetchTodos" />
     <div class="mt-5">
-      <div v-if="tasks.length === 0">
-        <h4>You don't have any tasks</h4>
-        <p>Add tasks to view them here</p>
+      <div v-if="fetchingTasks">
+        Loading Your Tasks, hold on tight...
       </div>
       <div v-else>
-        <h4>Your Tasks</h4>
-        <div v-for="(todo, index) in tasks" :key="index">
-          {{ todo.name }} {{ todo.status }}
+        <div v-if="tasks.length === 0">
+          <h4>You don't have any tasks</h4>
+          <p>Add tasks to view them here</p>
+        </div>
+        <div v-else>
+          <h4 class="mb-0">Your Tasks</h4>
+          <small>You can double click to edit</small>
+          <div class="mt-3 todos">
+            <todo v-for="(todo, index) in tasks" :key="index" :task="todo" />
+          </div>
         </div>
       </div>
     </div>
@@ -46,8 +52,8 @@ export default {
             }
             if (res.data.data) {
               this.tasks = res.data.data;
+              this.fetchingTasks = false;
             }
-            this.fetchingTasks = false;
           })
           .catch((err) => {
              let errors = String(err).split(" ");
