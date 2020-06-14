@@ -9,9 +9,7 @@
 |
 */
 $app->set404(function () use ($app) {
-	$app->response->respondWithCode([
-		"data" => "Resource not found",
-	], 404);
+	$app->response->throwErr("Resource not found", 404);
 });
 
 /*
@@ -38,7 +36,7 @@ $app->mount("/auth", function() use($app) {
 	$app->get("/refresh/(\d+)", "UsersController@refreshToken");
 });
 
-$user->mount("/user", function() use($app) {
+$app->mount("/user", function() use($app) {
 	$app->get("/", "UsersController@user");
 	$app->post("/update", "UsersController@update");
 });
