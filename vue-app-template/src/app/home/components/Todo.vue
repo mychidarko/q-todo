@@ -76,7 +76,6 @@ export default {
 			
 			axios({ url: `${API_URL}/todos/${this.task.id}/edit`, method: "post", data, headers })
 				.then((res) => {
-					console.log(res.data, this.task.id);
 					if (res.data.error && res.data.error === "Expired token") {
 						User.refreshToken(this.updateTask);
 					}

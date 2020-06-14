@@ -84,7 +84,6 @@ export default {
 
       axios({ url: `${API_URL}/auth/login`, method: "post", data })
           .then((res) => {
-              console.log("res", res.data);
               if (res.data.error && res.data.error.username) {
                 this.usernameError = res.data.error.username;
                 this.logginIn = false;

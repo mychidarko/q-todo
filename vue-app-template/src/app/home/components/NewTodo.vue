@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div style="margin-top: 90px !important;">
 		<b-alert  :show="taskError.length > 0" variant="danger" dismissible>{{ taskError }}</b-alert>
 		<b-alert  v-model="success" variant="success" dismissible>Task has been saved!</b-alert>
 		<p class="mt-5" v-b-modal="'add-task-modal'">+ Add A Task</p>
@@ -54,7 +54,6 @@ export default {
 					
 			axios({ url: `${API_URL}/todos`, method: "post", data, headers })
 				.then((res) => {
-					console.log(res.data);
 					if (res.data.data) {
 						this.fetchTodos();
 						this.addingTask = false;

@@ -2,6 +2,7 @@ import auth from "./auth/routes";
 import home from "./home/routes";
 import errors from "./errors/routes";
 import settings from "./settings/routes";
+import search from "./search/routes";
 
 export default [
 	{
@@ -13,7 +14,8 @@ export default [
 				redirect: "/home"
 			},
 			...home,
-			...settings
+			...settings,
+			...search
 		]
 	},
 	...auth,

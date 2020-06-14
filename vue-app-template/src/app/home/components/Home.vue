@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mt-5">
     <new-todo :fetchTodos="fetchTodos" />
     <div class="mt-5">
       <div v-if="fetchingTasks">
@@ -46,7 +46,6 @@ export default {
 
       axios({ url: `${API_URL}/todos`, method: "get", headers  })
           .then((res) => {
-            console.log(res.data);
             if (res.data.error && res.data.error === "Expired token") {
               User.refreshToken(this.fetchTodos);
             }

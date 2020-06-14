@@ -5,8 +5,6 @@ import User from "@/storage/user.storage";
 
 Vue.use(Router);
 
-console.log(routes);
-
 const router = new Router({
   mode: "history",
   base: process.env.BASE_URL,
